@@ -1,22 +1,22 @@
 (function() {
 
-var APP = angular.module('app', ['ionic', 'ng-token-auth'])
+var APP = angular.module('app', ['ionic', 'ng-token-auth', 'ngResource'])
 
-.controller('ApplicationCtrl', function ($scope, State, $ionicSideMenuDelegate) {
+.controller('ApplicationCtrl', function ($scope, State, $ionicSideMenuDelegate, Projects, $ionicModal) {
 
     $scope.init = function () {
       $scope.st = State;
     }
 
-    // A utility function for creating a new project
-    // with the given projectTitle
     var createProject = function(projectTitle) {
-      var newProject = Projects.newProject(projectTitle);
-      State.projects.push(newProject);
-      Projects.save($scope.projects);
-      $scope.selectProject(newProject, State.length-1);
-      $scope.projectModal.hide();
-    }
+      Projects.newProject(projectTitle).then(function (resp) {
+        console.log(resp);
+        State.projects.push(resp);
+        Projects.save($scope.projects);
+        $scope.selectProject(newProject, State.length-1);
+        $scope.projectModal.hide();
+      });
+    };
 
     $scope.showProjectModal = function(){
         $scope.projectModal.show();
@@ -49,6 +49,11 @@ var APP = angular.module('app', ['ionic', 'ng-token-auth'])
         $scope.projectModal.hide();
     };
 
+    $ionicModal.fromTemplateUrl('new-project.html', function(modal) {
+      $scope.projectModal = modal;
+    }, {
+      scope: $scope
+    });
 })
 
 .run(function($ionicPlatform) {

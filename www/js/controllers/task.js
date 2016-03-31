@@ -2,21 +2,23 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
     $scope.init = function () {
       $auth.validateUser().then(function(resp) {
         console.info(resp);
-        // Load or initialize projects
-        $scope.projects = State.projects = Projects.all();
-        $scope.activeProject = State.activeProject = $scope.projects[Projects.getLastActiveIndex()];
 
-        $timeout(function() {
-          if($scope.projects.length == 0) {
-              $scope.projectModal.show();
-          }
+        $scope.projects = State.projects = Projects.query(function() {
+            $scope.activeProject = State.activeProject = $scope.projects[0];
+            $timeout(function() {
+              if($scope.projects.length == 0) {
+                  $scope.projectModal.show();
+              }
+            });
         });
-      }, function (err) {
+
+        },function(err) {
+            console.error(err);
+        });
+    }, function (err) {
         console.log(err);
         $location.path('/signin');
-      });
     };
-
 
     $scope.createTask = function(task) {
       if(!$scope.activeProject || !task) {
@@ -50,11 +52,6 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
     // Create our modal
     $ionicModal.fromTemplateUrl('new-task.html', function(modal) {
       $scope.taskModal = modal;
-    }, {
-      scope: $scope
-    });
-    $ionicModal.fromTemplateUrl('new-project.html', function(modal) {
-      $scope.projectModal = modal;
     }, {
       scope: $scope
     });
