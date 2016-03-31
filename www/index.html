@@ -38,7 +38,7 @@
           <button class="button button-icon" ng-click="toggleProjects()">
             <i class="icon ion-navicon"></i>
           </button>
-          <h1 class="title">{{st.activeProject.title}}</h1>
+          <h1 class="title">{{st.activeProject.name}}</h1>
           <!-- New Task button-->
         </ion-header-bar>
         <ion-nav-view class="nav-view" style="margin-top: 0px;"></ion-nav-view>
@@ -51,8 +51,8 @@
           </ion-header-bar>
           <ion-content scroll="true">
               <ion-list>
-                  <ion-item ng-repeat="project in st.projects" ng-click="selectProject(project, $index)" ng-class="{active: st.activeProject == project}">
-                      {{project.title}}
+                  <ion-item ng-repeat="project in st.projects" ng-click="selectProject(project)" ng-class="{active: st.activeProject == project}">
+                      {{project.name}}
                   </ion-item>
               </ion-list>
           </ion-content>

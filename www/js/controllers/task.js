@@ -3,8 +3,9 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
       $auth.validateUser().then(function(resp) {
         console.info(resp);
 
-        $scope.projects = State.projects = Projects.query(function() {
-            $scope.activeProject = State.activeProject = $scope.projects[0];
+        Projects.query(function(res) {
+            $scope.projects = State.projects = res
+            $scope.activeProject = State.activeProject = $scope.projects && $scope.projects[0];
             $timeout(function() {
               if($scope.projects.length == 0) {
                   $scope.projectModal.show();

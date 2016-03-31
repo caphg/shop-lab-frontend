@@ -9,11 +9,11 @@ var APP = angular.module('app', ['ionic', 'ng-token-auth', 'ngResource'])
     }
 
     var createProject = function(projectTitle) {
-      Projects.newProject(projectTitle).then(function (resp) {
-        console.log(resp);
-        State.projects.push(resp);
-        Projects.save($scope.projects);
-        $scope.selectProject(newProject, State.length-1);
+      var project = new Projects({name: projectTitle});
+      project.$save(function (project) {
+        console.log(project);
+        State.projects.push(project);
+        $scope.selectProject(project);
         $scope.projectModal.hide();
       });
     };
@@ -31,10 +31,8 @@ var APP = angular.module('app', ['ionic', 'ng-token-auth', 'ngResource'])
     };
 
     // Called to select the given project
-    $scope.selectProject = function(project, index) {
+    $scope.selectProject = function(project) {
       State.activeProject = project;
-      Projects.setLastActiveIndex(index);
-     // $scope.sideMenuController.close();
      $ionicSideMenuDelegate.toggleRight();
     };
 
