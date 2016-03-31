@@ -1,114 +1,54 @@
 (function() {
 
-var APP = angular.module('app', ['ionic'])
+var APP = angular.module('app', ['ionic', 'ng-token-auth'])
 
-.controller('ApplicationCtrl', function ($scope, $timeout, $ionicModal, $ionicSideMenuDelegate, Projects) {
+.controller('ApplicationCtrl', function ($scope, State, $ionicSideMenuDelegate) {
+
+    $scope.init = function () {
+      $scope.st = State;
+    }
+
     // A utility function for creating a new project
-  // with the given projectTitle
-  var createProject = function(projectTitle) {
-    var newProject = Projects.newProject(projectTitle);
-    $scope.projects.push(newProject);
-    Projects.save($scope.projects);
-    $scope.selectProject(newProject, $scope.projects.length-1);
-    $scope.projectModal.hide();
-  }
-
-
-  // Load or initialize projects
-  $scope.projects = Projects.all();
-  console.log(Projects.getProjects());
-
-  // Grab the last active, or the first project
-  $scope.activeProject = $scope.projects[Projects.getLastActiveIndex()];
-    
-  $scope.showProjectModal = function(){
-      $scope.projectModal.show();
-  };
-    
-  // Called to create a new project
-  $scope.newProject = function(project) {
-    //var projectTitle = prompt('Project name');
-    var projectTitle = project.title;
-    if(projectTitle) {
-      createProject(projectTitle);
-    }
-  };
-
-  // Called to select the given project
-  $scope.selectProject = function(project, index) {
-    $scope.activeProject = project;
-    Projects.setLastActiveIndex(index);
-   // $scope.sideMenuController.close();
-   $ionicSideMenuDelegate.toggleRight();
-  };
-
-  $scope.toggleProjects = function() {
-      console.log("---------------------------");
-      //console.log($scope);
-      //$scope.sideMenuController.toggleLeft();
-      $ionicSideMenuDelegate.toggleLeft();
-  };
-
-  $scope.closeNewProject = function(){
+    // with the given projectTitle
+    var createProject = function(projectTitle) {
+      var newProject = Projects.newProject(projectTitle);
+      State.projects.push(newProject);
+      Projects.save($scope.projects);
+      $scope.selectProject(newProject, State.length-1);
       $scope.projectModal.hide();
-  }
-
-  $scope.newTask = function() {
-      $scope.taskModal.show();
-  };
-
-  $scope.createTask = function(task) {
-    if(!$scope.activeProject || !task) {
-      return;
     }
-    $scope.activeProject.tasks.push({
-      title: task.title,
-      done: false
-    });
-    $scope.taskModal.hide();
 
-    // Inefficient, but save all the projects
-    Projects.save($scope.projects);
-
-    task.title = "";
-  };
-
-  $scope.toggle = function (task) {
-    task.done = !task.done;
-    Projects.save($scope.projects);
-  };
-
-  $scope.closeNewTask = function() {
-      $scope.taskModal.hide();
-  };
-
-  // Create our modal
-  $ionicModal.fromTemplateUrl('new-task.html', function(modal) {
-    $scope.taskModal = modal;
-  }, {
-    scope: $scope
-  });
-  $ionicModal.fromTemplateUrl('new-project.html', function(modal) {
-    $scope.projectModal = modal;
-  }, {
-    scope: $scope
-  });
-
-  // Try to create the first project, make sure to defer
-  // this by using $timeout so everything is initialized
-  // properly
-  $timeout(function() {
-    if($scope.projects.length == 0) {
-      //while(true) {
+    $scope.showProjectModal = function(){
         $scope.projectModal.show();
-        //var projectTitle = prompt('Your first project title:');
-        //if(projectTitle) {
-          //createProject(projectTitle);
-          //break;
-        //}
-      //}
-    }
-  });
+    };
+    // Called to create a new project
+    $scope.newProject = function(project) {
+      //var projectTitle = prompt('Project name');
+      var projectTitle = project.title;
+      if(projectTitle) {
+        createProject(projectTitle);
+      }
+    };
+
+    // Called to select the given project
+    $scope.selectProject = function(project, index) {
+      State.activeProject = project;
+      Projects.setLastActiveIndex(index);
+     // $scope.sideMenuController.close();
+     $ionicSideMenuDelegate.toggleRight();
+    };
+
+    $scope.toggleProjects = function() {
+        console.log("---------------------------");
+        //console.log($scope);
+        //$scope.sideMenuController.toggleLeft();
+        $ionicSideMenuDelegate.toggleLeft();
+    };
+
+    $scope.closeNewProject = function(){
+        $scope.projectModal.hide();
+    };
+
 })
 
 .run(function($ionicPlatform) {
@@ -127,12 +67,23 @@ var APP = angular.module('app', ['ionic'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $authProvider) {
   $stateProvider
   .state('tasks', {
     url: '/',
     templateUrl: 'templates/task.html',
-    controller: 'TaskCtrl'
+    controller: 'TaskCtrl',
+    cache: false
+  })
+  .state('signup', {
+    url: '/signup',
+    templateUrl: 'templates/register.html',
+    controller: 'SignupCtrl'
+  })
+  .state('signin', {
+    url: '/signin',
+    templateUrl: 'templates/login.html',
+    controller: 'SigninCtrl'
   })
 
   // if none of the above states are matched, use this as the fallback
@@ -140,6 +91,10 @@ var APP = angular.module('app', ['ionic'])
   $ionicConfigProvider.views.transition('android');
   $ionicConfigProvider.scrolling.jsScrolling(true);
   $ionicConfigProvider.views.swipeBackEnabled(false);
+
+  $authProvider.configure({
+      apiUrl: CONFIG.apiUrl
+  });
 
 });
   window.APP = APP

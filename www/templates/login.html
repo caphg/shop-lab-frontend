@@ -1,0 +1,14 @@
+<ion-content class="padding">
+    <form role="form">
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input type="email" placeholder="email" name="email" ng-model="loginForm.email" required="required" class=""/>
+            </label>
+            <label class="item item-input">
+                <input type="password" placeholder="password" name="password" ng-model="loginForm.password" required="required" class=""/>
+            </label>
+        </div>
+
+        <button ng-click="handleLoginBtnClick(loginForm)" type="submit" class="button button-block button-calm">Sign in</button>
+    </form>
+</ion-content>
