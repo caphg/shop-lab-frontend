@@ -5,7 +5,7 @@ function ($location, $ionicPopup, $ionicLoading) {
         error: '',
         message: '',
         redirectParams: null,
-        activeProject: {title: 'Sign In'},
+        activeProject: null,
         projects: null,
         navigate: function (url, params) {
             console.info('Navigating to '+url);

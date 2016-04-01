@@ -2,7 +2,7 @@
 
 var APP = angular.module('app', ['ionic', 'ng-token-auth', 'ngResource'])
 
-.controller('ApplicationCtrl', function ($scope, State, $ionicSideMenuDelegate, Projects, $ionicModal) {
+.controller('ApplicationCtrl', function ($scope, State, $ionicSideMenuDelegate, Projects, $ionicModal, $rootScope) {
 
     $scope.init = function () {
       $scope.st = State;
@@ -33,7 +33,8 @@ var APP = angular.module('app', ['ionic', 'ng-token-auth', 'ngResource'])
     // Called to select the given project
     $scope.selectProject = function(project) {
       State.activeProject = project;
-     $ionicSideMenuDelegate.toggleRight();
+      $ionicSideMenuDelegate.toggleRight();
+      $rootScope.$broadcast('project-changed');
     };
 
     $scope.toggleProjects = function() {

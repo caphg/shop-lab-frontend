@@ -1,11 +1,23 @@
-APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMenuDelegate, Projects, $auth, $location, State) {
+APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMenuDelegate, Projects, $auth, $location, State, Tasks) {
+
+    $scope.$on('project-changed', function(event, args) {
+      $scope.init();
+    });
+
     $scope.init = function () {
+      $scope.tasks = [];
       $auth.validateUser().then(function(resp) {
         console.info(resp);
 
         Projects.query(function(res) {
             $scope.projects = State.projects = res
-            $scope.activeProject = State.activeProject = $scope.projects && $scope.projects[0];
+            $scope.activeProject = State.activeProject || ($scope.projects && $scope.projects[0]);
+            if(!State.activeProject) State.activeProject = $scope.activeProject;
+            if($scope.activeProject) {
+              Tasks.query({project_id: $scope.activeProject.id}, function(tasks) {
+                $scope.tasks = tasks;
+              });
+            }
             $timeout(function() {
               if($scope.projects.length == 0) {
                   $scope.projectModal.show();
@@ -25,21 +37,19 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
       if(!$scope.activeProject || !task) {
         return;
       }
-      $scope.activeProject.tasks.push({
-        title: task.title,
-        done: false
+      var task = new Tasks({name: task.title});
+      task.$save({project_id: $scope.activeProject.id}, function (task) {
+        console.log(task);
+        $scope.tasks.push(task);
       });
       $scope.taskModal.hide();
-
-      // Inefficient, but save all the projects
-      Projects.save($scope.projects);
 
       task.title = "";
     };
 
     $scope.toggle = function (task) {
       task.done = !task.done;
-      Projects.save($scope.projects);
+      Tasks.update({project_id: $scope.activeProject.id, id: task.id}, task);
     };
 
     $scope.closeNewTask = function() {

@@ -1,7 +1,7 @@
 <ion-content scroll="true" ng-init="init()">
     <ion-list>
-        <ion-item ng-repeat="task in activeProject.tasks" ng-click="toggle(task)">
-            <span ng-class="{'done': task.done}">{{task.title}}</span>
+        <ion-item ng-repeat="task in tasks" ng-click="toggle(task)">
+            <span ng-class="{'done': task.done}">{{task.name}}</span>
         </ion-item>
     </ion-list>
 </ion-content>
