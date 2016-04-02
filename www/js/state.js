@@ -8,6 +8,18 @@ function ($location, $ionicPopup, $ionicLoading, ProjectInvite) {
         activeProject: null,
         projects: null,
         user: null,
+        showError: function(msg) {
+            $ionicPopup.alert({
+                title: 'Error',
+                template: msg
+            });
+        },
+        showInfo: function(msg) {
+            $ionicPopup.alert({
+                title: 'Info',
+                template: msg
+            });
+        },
         navigate: function (url, params) {
             console.info('Navigating to '+url);
             State.message = '';

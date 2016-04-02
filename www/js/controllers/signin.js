@@ -9,9 +9,7 @@ APP.controller('SigninCtrl', function($scope, $auth, $location, State) {
           $location.path('/');
         })
         .catch(function(resp) {
-          // handle error response
-          console.error(resp);
-          alert(resp.reason);
+          State.showError('Please try again.')
         });
     };
   });
