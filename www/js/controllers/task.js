@@ -86,6 +86,7 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
     $ionicModal.fromTemplateUrl('new-task.html', function(modal) {
       $scope.taskModal = modal;
     }, {
-      scope: $scope
+      scope: $scope,
+      focusFirstInput: true
     });
 });

@@ -56,7 +56,7 @@ var APP = angular.module('app', ['ionic', 'ng-token-auth', 'ngResource'])
 
     $scope.newInvite = function(invitation) {
       ProjectInvite.invite(invitation.email, $scope.invitation.project_id).then(function () {
-        alert('Invitation sent!');
+        State.showInfo("Invitation sent!");
       });
     };
 
