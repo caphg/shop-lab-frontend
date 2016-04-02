@@ -7,6 +7,7 @@ function ($location, $ionicPopup, $ionicLoading, ProjectInvite) {
         redirectParams: null,
         activeProject: null,
         projects: null,
+        user: null,
         navigate: function (url, params) {
             console.info('Navigating to '+url);
             State.message = '';

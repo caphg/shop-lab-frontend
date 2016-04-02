@@ -25,6 +25,7 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
     $scope.init = function () {
       $scope.tasks = [];
       $auth.validateUser().then(function(resp) {
+        State.user = resp.uid;
         ProjectInvite.query().then(function (invite) {
           console.log(invite.data);
           if(invite && invite.data) {
@@ -60,6 +61,12 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
       $scope.taskModal.hide();
 
       task.title = "";
+    };
+
+    $scope.deleteTask = function (task) {
+      if(!task) return;
+      task.$delete({project_id: $scope.activeProject.id});
+      $scope.doRefresh();
     };
 
     $scope.toggle = function (task) {

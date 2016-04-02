@@ -1,4 +1,5 @@
 <ion-content class="padding" style="margin-top: 43px;">
+    <h2>Welcome to Shop Lab!</h2>
     <form role="form">
         <div class="list list-inset">
             <label class="item item-input">
@@ -9,6 +10,8 @@
             </label>
         </div>
 
-        <button ng-click="handleLoginBtnClick(loginForm)" type="submit" class="button button-block button-calm">Sign in</button>
+        <button ng-click="handleLoginBtnClick(loginForm)" type="submit" class="button button-block button-calm">Sign In</button>
+        <h4>Not a Member?</h4>
+        <a href ng-click="st.navigate('/signup')" class="">Sign Up</a>
     </form>
 </ion-content>

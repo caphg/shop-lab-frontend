@@ -35,8 +35,8 @@
   <body ng-app="app" ng-controller="ApplicationCtrl" ng-init="init()">
     <ion-side-menus>
       <ion-side-menu-content>
-        <ion-header-bar class="bar-dark">
-          <button class="button button-icon" ng-click="toggleProjects()">
+        <ion-header-bar class="bar-calm">
+          <button class="button button-icon" ng-click="toggleProjects()" ng-show="st.user != null">
             <i class="icon ion-navicon"></i>
           </button>
           <h1 class="title">{{st.activeProject.name}}</h1>
@@ -44,9 +44,9 @@
         </ion-header-bar>
         <ion-nav-view class="nav-view" style="margin-top: 0px;"></ion-nav-view>
       </ion-side-menu-content>
-      <ion-side-menu side="left">
-          <ion-header-bar class="bar-dark">
-              <h1 class="title">Projects</h1>
+      <ion-side-menu side="left" ng-show="st.user != null">
+          <ion-header-bar class="bar-royal">
+              <h1 class="title">Lists</h1>
               <button class="button button-icon ion-plus" ng-click="showProjectModal()">
               </button>
           </ion-header-bar>
@@ -67,7 +67,7 @@
         <div class="modal">
           <!-- Modal header bar -->
           <ion-header-bar class="bar-secondary">
-            <h1 class="title">New Project</h1>
+            <h1 class="title">New List</h1>
             <button class="button button-clear button-positive" ng-click="closeNewProject()">Cancel</button>
           </ion-header-bar>
           <!-- Modal content area -->
@@ -75,11 +75,11 @@
             <form ng-submit="newProject(project)">
               <div class="list">
                 <label class="item item-input">
-                  <input type="text" placeholder="Project Name" ng-model="project.title">
+                  <input type="text" placeholder="List Name" ng-model="project.title">
                 </label>
               </div>
               <div class="padding">
-                <button type="submit" class="button button-block button-positive">Create Project</button>
+                <button type="submit" class="button button-block button-positive">Create List</button>
               </div>
             </form>
           </ion-content>

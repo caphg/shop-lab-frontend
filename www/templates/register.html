@@ -1,18 +1,21 @@
-<form ng-submit="submitRegistration(registrationForm)" role="form" ng-init="registrationForm = {}">
-  <div class="form-group">
-    <label>email</label>
-    <input type="email" name="email" ng-model="registrationForm.email" required="required" class="form-control"/>
-  </div>
+<ion-content class="padding" style="margin-top: 43px;">
+  <h2>Sign Up</h2>
+  <form ng-submit="submitRegistration(registrationForm)" role="form" ng-init="registrationForm = {}">
+    <div class="list list-inset">
+      <label class="item item-input">
+        <input type="email" placeholder="email" name="email" ng-model="registrationForm.email" required="required" class=""/>
+      </label>
 
-  <div class="form-group">
-    <label>password</label>
-    <input type="password" name="password" ng-model="registrationForm.password" required="required" class="form-control"/>
-  </div>
+      <label class="item item-input">
+        <input type="password" placeholder="password" name="password" ng-model="registrationForm.password" required="required" class=""/>
+      </label>
 
-  <div class="form-group">
-    <label>password confirmation</label>
-    <input type="password" name="password_confirmation" ng-model="registrationForm.password_confirmation" required="required" class="form-control"/>
-  </div>
-
-  <button type="submit" class="btn btn-primary btn-lg">Register</button>
-</form>
+      <label class="item item-input">
+        <input type="password" placeholder="password confirm" name="password_confirmation" ng-model="registrationForm.password_confirmation" required="required" class="form-control"/>
+      </label>
+    </div>
+    <button type="submit" class="button button-block button-calm">Register</button>
+     <h4>Have an Account?</h4>
+        <a href ng-click="st.navigate('/signin')" class="">Sign In</a>
+  </form>
+</ion-content>
