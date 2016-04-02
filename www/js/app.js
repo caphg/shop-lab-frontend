@@ -2,7 +2,8 @@
 
 var APP = angular.module('app', ['ionic', 'ng-token-auth', 'ngResource'])
 
-.controller('ApplicationCtrl', function ($scope, State, $ionicSideMenuDelegate, Projects, $ionicModal, $rootScope) {
+.controller('ApplicationCtrl', function ($scope, State, $ionicSideMenuDelegate, Projects, $ionicModal, $rootScope, ProjectInvite) {
+    $scope.invitation = {};
 
     $scope.init = function () {
       $scope.st = State;
@@ -18,12 +19,16 @@ var APP = angular.module('app', ['ionic', 'ng-token-auth', 'ngResource'])
       });
     };
 
-    $scope.showProjectModal = function(){
+    $scope.showProjectModal = function(project){
         $scope.projectModal.show();
+    };
+
+    $scope.showInviteModal = function(project){
+        $scope.invitation.project_id = project.id;
+        $scope.inviteModal.show();
     };
     // Called to create a new project
     $scope.newProject = function(project) {
-      //var projectTitle = prompt('Project name');
       var projectTitle = project.title;
       if(projectTitle) {
         createProject(projectTitle);
@@ -38,21 +43,45 @@ var APP = angular.module('app', ['ionic', 'ng-token-auth', 'ngResource'])
     };
 
     $scope.toggleProjects = function() {
-        console.log("---------------------------");
-        //console.log($scope);
-        //$scope.sideMenuController.toggleLeft();
         $ionicSideMenuDelegate.toggleLeft();
+    };
+
+    $scope.delete = function (project) {
+      if(project.id == State.activeProject.id) {
+        State.activeProject = null;
+      }
+      project.$delete();
+      $rootScope.$broadcast('project-changed');
+    };
+
+    $scope.newInvite = function(invitation) {
+      ProjectInvite.invite(invitation.email, $scope.invitation.project_id).then(function () {
+        alert('Invitation sent!');
+      });
     };
 
     $scope.closeNewProject = function(){
         $scope.projectModal.hide();
     };
 
+    $scope.closeInvite = function(){
+        $scope.inviteModal.hide();
+    };
+
     $ionicModal.fromTemplateUrl('new-project.html', function(modal) {
       $scope.projectModal = modal;
     }, {
-      scope: $scope
+      scope: $scope,
+      focusFirstInput: true
     });
+
+    $ionicModal.fromTemplateUrl('new-invite.html', function(modal) {
+      $scope.inviteModal = modal;
+    }, {
+      scope: $scope,
+      focusFirstInput: true
+    });
+
 })
 
 .run(function($ionicPlatform) {

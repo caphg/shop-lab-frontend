@@ -51,27 +51,27 @@
               </button>
           </ion-header-bar>
           <ion-content scroll="true">
-              <ion-list>
+              <ion-list can-swipe="true">
                   <ion-item ng-repeat="project in st.projects" ng-click="selectProject(project)" ng-class="{active: st.activeProject.id == project.id}">
-                      {{project.name}}
+                      <h2>{{project.name}}</h2>
+                      <ion-option-button class="button-positive"
+                       ng-click="showInviteModal(project)">Invite</ion-option-button>
+                       <ion-option-button class="button-assertive"
+                       ng-click="delete(project)">Delete</ion-option-button>
                   </ion-item>
               </ion-list>
           </ion-content>
       </ion-side-menu>
       
       <script id="new-project.html" type="text/ng-template">
-
         <div class="modal">
-
           <!-- Modal header bar -->
           <ion-header-bar class="bar-secondary">
             <h1 class="title">New Project</h1>
             <button class="button button-clear button-positive" ng-click="closeNewProject()">Cancel</button>
           </ion-header-bar>
-
           <!-- Modal content area -->
           <ion-content>
-
             <form ng-submit="newProject(project)">
               <div class="list">
                 <label class="item item-input">
@@ -82,11 +82,31 @@
                 <button type="submit" class="button button-block button-positive">Create Project</button>
               </div>
             </form>
-
           </ion-content>
-
         </div>
+      </script>
 
+      <script id="new-invite.html" type="text/ng-template">
+        <div class="modal">
+          <!-- Modal header bar -->
+          <ion-header-bar class="bar-secondary">
+            <h1 class="title">Invite to List</h1>
+            <button class="button button-clear button-positive" ng-click="closeInvite()">Cancel</button>
+          </ion-header-bar>
+          <!-- Modal content area -->
+          <ion-content>
+            <form ng-submit="newInvite(invitation)">
+              <div class="list">
+                <label class="item item-input">
+                  <input type="email" placeholder="User email" ng-model="invitation.email">
+                </label>
+              </div>
+              <div class="padding">
+                <button type="submit" class="button button-block button-positive">Send Invitation</button>
+              </div>
+            </form>
+          </ion-content>
+        </div>
       </script>
     </ion-side-menus>
   </body>

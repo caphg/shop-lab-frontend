@@ -1,12 +1,20 @@
 <ion-content scroll="true" ng-init="init()">
-    <ion-list>
+    <ion-refresher
+        pulling-text="Pull to refresh..."
+        on-refresh="doRefresh()">
+    </ion-refresher>
+    <ion-list can-swipe="true">
         <ion-item ng-repeat="task in tasks" ng-click="toggle(task)">
-            <span ng-class="{'done': task.done}">{{task.name}}</span>
+            <h2 class="ite-title" ng-class="{'done': task.done}">{{task.name}}</h2>
+            <p class="item-info">By {{task.owner}} @ {{task.created_at | date: 'short'}}</p>
+            <ion-option-button class="button-assertive"
+                       ng-click="delete(task)">Delete
+            </ion-option-button>
         </ion-item>
     </ion-list>
 </ion-content>
 
-<ion-footer-bar align-title="center" class="bar-assertive"  ng-click="newTask()">
+<ion-footer-bar align-title="center" class="bar-calm"  ng-click="newTask()">
   <h1 class="title">New Task</h1>
   <div class="buttons">
   </div>
