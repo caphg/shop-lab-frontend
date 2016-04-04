@@ -2,6 +2,7 @@ APP.factory('State', ['$location', '$ionicPopup', '$ionicLoading', 'ProjectInvit
 function ($location, $ionicPopup, $ionicLoading, ProjectInvite, $rootScope) {
 
     var State = {
+        _loading: false,
         error: '',
         message: '',
         redirectParams: null,
@@ -9,6 +10,7 @@ function ($location, $ionicPopup, $ionicLoading, ProjectInvite, $rootScope) {
         projects: null,
         user: null,
         showFinished: false,
+        isLoading: false,
         showError: function(msg) {
             $ionicPopup.alert({
                 title: 'Error',
@@ -55,8 +57,38 @@ function ($location, $ionicPopup, $ionicLoading, ProjectInvite, $rootScope) {
         filterTasks: function () {
             State.showFinished = !State.showFinished;
             $rootScope.$broadcast('filter-tasks');
+        },
+        loadingHandler: function (callback) {
+            return function () {
+                if (State.loading) return;
+                State.loading = true;
+                return callback.apply(this, arguments);
+            };
+        },
+        stopLoading: function () {
+            State.loading = false;
         }
     };
+
+    Object.defineProperties(State, {
+        loading: {
+            get: function () {
+                return this._loading;
+            },
+            set: function (value) {
+                this._loading = value;
+
+                if (value) {
+                    $ionicLoading.show({
+                        template: '<i class="icon ion-loading-d"></i> Loading...'
+                    });
+                }
+                else {
+                    $ionicLoading.hide();
+                }
+            }
+        }
+    });
 
     return State;
 }]);

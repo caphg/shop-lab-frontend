@@ -12,6 +12,13 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
       $scope.filterTasks();
     });
 
+    var hideLoadingModal = function () {
+      State.stopLoading();
+      $timeout(function () {
+        $scope.$apply();
+      });
+    };
+
     var loadTasks = function () {
       Projects.query(function(res) {
           $scope.projects = State.projects = res;
@@ -28,10 +35,11 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
                 $scope.projectModal.show();
             }
           });
+          hideLoadingModal();
       });
     };
 
-    $scope.init = function () {
+    $scope.init = State.loadingHandler(function () {
       $scope.tasks = [];
       $auth.validateUser().then(function(resp) {
         State.user = resp.uid;
@@ -44,14 +52,16 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
 
         loadTasks();
 
-        },function(err) {
-            console.error(err);
-            $location.path('/signin');
-        });
+      },function(err) {
+        console.error(err);
+        hideLoadingModal();
+        $location.path('/signin');
+      });
     }, function (err) {
         console.log(err);
+        hideLoadingModal();
         $location.path('/signin');
-    };
+    });
 
     $scope.doRefresh = function () {
       loadTasks();
