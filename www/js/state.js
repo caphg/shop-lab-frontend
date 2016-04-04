@@ -1,5 +1,5 @@
-APP.factory('State', ['$location', '$ionicPopup', '$ionicLoading', 'ProjectInvite',
-function ($location, $ionicPopup, $ionicLoading, ProjectInvite) {
+APP.factory('State', ['$location', '$ionicPopup', '$ionicLoading', 'ProjectInvite', '$rootScope',
+function ($location, $ionicPopup, $ionicLoading, ProjectInvite, $rootScope) {
 
     var State = {
         error: '',
@@ -8,6 +8,7 @@ function ($location, $ionicPopup, $ionicLoading, ProjectInvite) {
         activeProject: null,
         projects: null,
         user: null,
+        showFinished: false,
         showError: function(msg) {
             $ionicPopup.alert({
                 title: 'Error',
@@ -50,6 +51,10 @@ function ($location, $ionicPopup, $ionicLoading, ProjectInvite) {
                 template: 'Deleting List will delete all of its data.'
             });
             return confirmPopup;
+        },
+        filterTasks: function () {
+            State.showFinished = !State.showFinished;
+            $rootScope.$broadcast('filter-tasks');
         }
     };
 

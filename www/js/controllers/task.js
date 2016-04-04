@@ -1,9 +1,15 @@
 APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMenuDelegate, Projects, $auth, $location, State, Tasks, ProjectInvite) {
 
     $scope.task = {};
+    $scope.allTasks = {};
+    State.showFinished = false;
 
     $scope.$on('project-changed', function(event, args) {
       $scope.init();
+    });
+
+    $scope.$on('filter-tasks', function(event, args) {
+      $scope.filterTasks();
     });
 
     var loadTasks = function () {
@@ -13,7 +19,8 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
           if(!State.activeProject) State.activeProject = $scope.activeProject;
           if($scope.activeProject) {
             Tasks.query({project_id: $scope.activeProject.id}, function(tasks) {
-              $scope.tasks = tasks;
+              $scope.tasks = $scope.allTasks = tasks;
+              $scope.filterTasks();
             });
           }
           $timeout(function() {
@@ -75,6 +82,7 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
     $scope.toggle = function (task) {
       task.done = !task.done;
       Tasks.update({project_id: $scope.activeProject.id, id: task.id}, task);
+      $scope.filterTasks();
     };
 
     $scope.closeNewTask = function() {
@@ -83,6 +91,12 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
 
     $scope.newTask = function() {
         $scope.taskModal.show();
+    };
+
+    $scope.filterTasks = function () {
+      $scope.tasks = $scope.allTasks.filter(function (t) {
+         return (State.showFinished && t.done) || (!State.showFinished && !t.done);
+      });
     };
 
     // Create our modal

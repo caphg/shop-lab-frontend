@@ -40,7 +40,9 @@
             <i class="icon ion-navicon"></i>
           </button>
           <h1 class="title">{{st.activeProject.name}}</h1>
-          <!-- New Task button-->
+            <div class="buttons">
+              <button class="button" ng-click="st.filterTasks()"><i ng-hide="st.showFinished" class="ion-ios-refresh-outline menu-icon"></i><i ng-show="st.showFinished" class="ion-ios-refresh menu-icon"></i></button>
+            </div>
         </ion-header-bar>
         <ion-nav-view class="nav-view" style="margin-top: 0px;"></ion-nav-view>
       </ion-side-menu-content>

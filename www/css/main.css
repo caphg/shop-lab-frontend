@@ -8,3 +8,17 @@
 .item-thumbnail-left .item-title {
   font-size: 40px;
   margin-top: 10px; }
+
+.menu-icon {
+  background-size: contain;
+  z-index: 999;
+  width: 40px;
+  font-size: 30px;
+  color: white;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0;
+  position: absolute;
+  right: 0;
+  top: 0; }
