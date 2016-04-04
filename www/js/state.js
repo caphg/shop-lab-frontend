@@ -43,7 +43,14 @@ function ($location, $ionicPopup, $ionicLoading, ProjectInvite) {
                 ProjectInvite.decline(invitation_id);
              }
            });
-         }
+        },
+        confirmProjectDelete: function () {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Sure?',
+                template: 'Deleting List will delete all of its data.'
+            });
+            return confirmPopup;
+        }
     };
 
     return State;

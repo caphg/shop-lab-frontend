@@ -1,12 +1,14 @@
 APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMenuDelegate, Projects, $auth, $location, State, Tasks, ProjectInvite) {
 
+    $scope.task = {};
+
     $scope.$on('project-changed', function(event, args) {
       $scope.init();
     });
 
     var loadTasks = function () {
       Projects.query(function(res) {
-          $scope.projects = State.projects = res
+          $scope.projects = State.projects = res;
           $scope.activeProject = State.activeProject || ($scope.projects && $scope.projects[0]);
           if(!State.activeProject) State.activeProject = $scope.activeProject;
           if($scope.activeProject) {
@@ -15,7 +17,7 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
             });
           }
           $timeout(function() {
-            if($scope.projects.length == 0) {
+            if(!$scope.activeProject) {
                 $scope.projectModal.show();
             }
           });
@@ -61,7 +63,7 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
       });
       $scope.taskModal.hide();
 
-      task.title = "";
+      $scope.task.title = "";
     };
 
     $scope.deleteTask = function (task) {

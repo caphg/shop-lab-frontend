@@ -4,9 +4,10 @@
         on-refresh="doRefresh()">
     </ion-refresher>
     <ion-list can-swipe="true">
-        <ion-item ng-repeat="task in tasks" ng-click="toggle(task)">
-            <h2 class="ite-title" ng-class="{'done': task.done}">{{task.name}}</h2>
-            <p class="item-info">By {{task.owner}} @ {{task.created_at | date: 'short'}}</p>
+        <ion-item ng-repeat="task in tasks" ng-click="toggle(task)" class="item-thumbnail-left">
+            <img ng-src="http://placehold.it/80?text={{task.owner | limitTo: 1 | uppercase}}" style="border-radius: 50%;"></img>
+            <h2 class="item-title" ng-class="{'done': task.done}">{{task.name}}</h2>
+            <p class="item-info">{{task.created_at | date: 'short'}}</p>
             <ion-option-button class="button-assertive"
                        ng-click="deleteTask(task)">Delete
             </ion-option-button>

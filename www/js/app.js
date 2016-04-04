@@ -47,11 +47,15 @@ var APP = angular.module('app', ['ionic', 'ng-token-auth', 'ngResource'])
     };
 
     $scope.delete = function (project) {
-      if(project.id == State.activeProject.id) {
-        State.activeProject = null;
-      }
-      project.$delete();
-      $rootScope.$broadcast('project-changed');
+      State.confirmProjectDelete().then(function (sure) {
+        if(sure) {
+          if(project.id == State.activeProject.id) {
+            State.activeProject = null;
+          }
+          project.$delete();
+          $rootScope.$broadcast('project-changed');
+        }
+      });
     };
 
     $scope.newInvite = function(invitation) {
