@@ -51,6 +51,7 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
 
     $scope.createTask = function(task) {
       if(!$scope.activeProject || !task) {
+        $scope.projectModal.show();
         return;
       }
       var task = new Tasks({name: task.title});
