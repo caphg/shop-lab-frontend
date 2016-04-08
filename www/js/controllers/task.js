@@ -68,8 +68,9 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
       $scope.$broadcast('scroll.refreshComplete');
     };
 
-    $scope.createTask = function(task) {
+    $scope.createTask = State.loadingHandler(function (task) {
       if(!$scope.activeProject || !task) {
+        hideLoadingModal();
         $scope.projectModal.show();
         return;
       }
@@ -81,13 +82,15 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
       $scope.taskModal.hide();
 
       $scope.task.title = "";
-    };
+      hideLoadingModal();
+    });
 
-    $scope.deleteTask = function (task) {
+    $scope.deleteTask = State.loadingHandler(function (task) {
       if(!task) return;
       task.$delete({project_id: $scope.activeProject.id});
       $scope.doRefresh();
-    };
+      hideLoadingModal();
+    });
 
     $scope.toggle = function (task) {
       task.done = !task.done;
@@ -101,6 +104,7 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
 
     $scope.newTask = function() {
         $scope.taskModal.show();
+        document.getElementById("item_input").focus();
     };
 
     $scope.filterTasks = function () {
