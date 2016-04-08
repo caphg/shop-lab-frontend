@@ -70,7 +70,7 @@
           <!-- Modal header bar -->
           <ion-header-bar class="bar-secondary">
             <h1 class="title">New List</h1>
-            <button class="button button-clear button-positive" ng-click="closeNewProject()">Cancel</button>
+            <button ng-show="st.projects && st.projects.length > 0" class="button button-clear button-positive" ng-click="closeNewProject()">Cancel</button>
           </ion-header-bar>
           <!-- Modal content area -->
           <ion-content>
