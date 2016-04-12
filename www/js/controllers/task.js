@@ -78,6 +78,9 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
       task.$save({project_id: $scope.activeProject.id}, function (task) {
         console.log(task);
         $scope.tasks.push(task);
+      }, function (err) {
+        console.log(err);
+        $location.path('/signin');
       });
       $scope.taskModal.hide();
 
@@ -94,7 +97,10 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
 
     $scope.toggle = function (task) {
       task.done = !task.done;
-      Tasks.update({project_id: $scope.activeProject.id, id: task.id}, task);
+      Tasks.update({project_id: $scope.activeProject.id, id: task.id}, task, function (){},
+        function (err) {
+          $location.path('/signin');
+        });
       $scope.filterTasks();
     };
 
