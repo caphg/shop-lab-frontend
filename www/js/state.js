@@ -10,6 +10,7 @@ function ($location, $ionicPopup, $ionicLoading, ProjectInvite, $rootScope) {
         projects: null,
         user: null,
         showFinished: false,
+        statusText: 'In Progress',
         isLoading: false,
         showError: function(msg) {
             $ionicPopup.alert({
@@ -56,6 +57,11 @@ function ($location, $ionicPopup, $ionicLoading, ProjectInvite, $rootScope) {
         },
         filterTasks: function () {
             State.showFinished = !State.showFinished;
+            if(State.showFinished) {
+                State.statusText = 'Completed';
+            } else {
+                State.statusText = 'In Progress';
+            }
             $rootScope.$broadcast('filter-tasks');
         },
         loadingHandler: function (callback) {

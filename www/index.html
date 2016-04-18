@@ -41,7 +41,7 @@
           </button>
           <h1 class="title">{{st.activeProject.name}}</h1>
             <div class="buttons">
-              <button class="button" ng-click="st.filterTasks()"><i ng-hide="st.showFinished" class="ion-ios-refresh-outline menu-icon"></i><i ng-show="st.showFinished" class="ion-ios-refresh menu-icon"></i></button>
+              <button class="button" ng-click="st.filterTasks()"><span style="margin-right: 40px;">{{st.statusText}}</span><i ng-hide="st.showFinished" class="ion-ios-refresh-outline menu-icon"></i><i ng-show="st.showFinished" class="ion-ios-refresh menu-icon"></i></button>
             </div>
         </ion-header-bar>
         <ion-nav-view class="nav-view" style="margin-top: 0px;"></ion-nav-view>
@@ -103,6 +103,12 @@
                   <input type="email" placeholder="User email" ng-model="invitation.email">
                 </label>
               </div>
+              <ul class="list">
+              <li class="item item-divider">
+                People in this list:
+              </li>
+              <li class="item" ng-repeat="user in invitation.alreadyInvited">{{user.email}}</li>
+              </ul>
               <div class="padding">
                 <button type="submit" class="button button-block button-positive">Send Invitation</button>
               </div>

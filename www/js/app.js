@@ -24,6 +24,7 @@ var APP = angular.module('app', ['ionic', 'ng-token-auth', 'ngResource'])
     };
 
     $scope.showInviteModal = function(project){
+        $scope.invitation.alreadyInvited = project.users;
         $scope.invitation.project_id = project.id;
         $scope.inviteModal.show();
     };
