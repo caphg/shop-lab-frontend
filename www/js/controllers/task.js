@@ -1,4 +1,4 @@
-APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMenuDelegate, Projects, $auth, $location, State, Tasks, ProjectInvite) {
+APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMenuDelegate, Projects, $auth, $location, State, Tasks, ProjectInvite, $ionicPlatform) {
 
     $scope.task = {};
     $scope.allTasks = {};
@@ -10,6 +10,10 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
 
     $scope.$on('filter-tasks', function(event, args) {
       $scope.filterTasks();
+    });
+
+    $ionicPlatform.on('resume', function () {
+      $scope.init();
     });
 
     var hideLoadingModal = function () {
@@ -109,8 +113,14 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
     };
 
     $scope.newTask = function() {
-        $scope.taskModal.show();
-        document.getElementById("item_input").focus();
+      $ionicModal.fromTemplateUrl('new-task.html', {
+          scope: $scope,
+          animation: 'slide-in-up',
+          focusFirstInput: true
+        }).then(function(modal) {
+          $scope.taskModal = modal;
+          $scope.taskModal.show();
+        });
     };
 
     $scope.filterTasks = function () {
@@ -118,12 +128,4 @@ APP.controller('TaskCtrl', function($scope, $timeout, $ionicModal, $ionicSideMen
          return (State.showFinished && t.done) || (!State.showFinished && !t.done);
       });
     };
-
-    // Create our modal
-    $ionicModal.fromTemplateUrl('new-task.html', function(modal) {
-      $scope.taskModal = modal;
-    }, {
-      scope: $scope,
-      focusFirstInput: true
-    });
 });
