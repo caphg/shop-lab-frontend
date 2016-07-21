@@ -41,7 +41,7 @@
             <input id="item_input" type="text" placeholder="Write it down..." ng-model="task.title">
           </label>
           <ion-list>
-            <ion-item ng-repeat="recommendation in allTasks | filter:task.title | limitTo: 3">
+            <ion-item ng-repeat="recommendation in allTasks | filter:task.title | limitTo: 3" ng-click="createTask({title: recommendation.name})">
               {{ recommendation.name }}
             </ion-item>
           </ion-list>
